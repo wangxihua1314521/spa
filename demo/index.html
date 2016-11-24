@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>COFFCE-PJAX-DEMO</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <div id="container"></div>
+    <div id="main">
+        <a href="1.html">1.html</a>
+        <a href="2.html">2.html</a>
+        <a href="3.html" data-coffce-pjax="传递到新页面的数据">3.html</a>
+    </div>
+    <!--Scripts-->
+    <script src="../scripts/coffce-pjax.js"></script>
+    <script>
+        var container = document.getElementById("container");
+        var pjax = CoffcePJAX;
+        
+        // 配置PJAX
+        pjax.init({
+            container: container,
+            hash: true,
+            filter: {
+                content: function(title, html) {
+                    // 已后退到首页，真实环境不需要这一步。
+                    if (html.indexOf('<html lang="en">') > -1) {
+                        container.innerHTML = "";
+                        return false;
+                    }
+
+                    return true;
+                }
+            },
+            events: {
+                init: function() {
+                    console.log("init");
+                },
+                end: function() {
+                    console.log("end");  
+                },
+                ajaxBegin: function() {
+                    console.log("ajaxBegin");
+                },
+                ajaxSuccess: function() {
+                    console.log("ajaxSuccess");
+                },
+                ajaxError: function() {
+                    console.log("ajaxError")
+                }
+            }
+        });
+    </script>
+</body>
+</html>
